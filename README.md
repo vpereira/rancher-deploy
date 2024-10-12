@@ -11,9 +11,9 @@ This project automates the deployment of a **MicroOS VM** and installs **K3s**, 
 
 ## Prerequisites
 
-- **Terraform** installed: [Terraform Installation Guide](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- **Ansible** installed: [Ansible Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-- **SSH Access**: Ensure you have SSH access to the target VM with a key pair.
+- **Terraform** 
+- **Ansible** 
+- **SSH Access**: The base image used by proxmox, has already my ssh key injected by cloud-init
 
 ## Setup
 
@@ -51,7 +51,7 @@ This project automates the deployment of a **MicroOS VM** and installs **K3s**, 
    rancher_node ansible_host=192.168.0.11 ansible_user=root
 
    [rancher_node:vars]
-   rancher_bootstrap_password="superduperpassword"
+   rancher_bootstrap_password="superduperpassword" # password used to login on rancher
    rancher_hostname="your-rancher-hostname" # it will be used by cert-manager, if you dont a name
                                             # use something like <IP_OF_LINUX_NODE>.sslip.io
    cert_manager_version="v1.16.1"
@@ -86,6 +86,9 @@ NAME      READY   UP-TO-DATE   AVAILABLE   AGE
 rancher   1/1     1            1           2m41s
 ```
 
+If everything worked properly you will then get Rancher up and running :rocket:
+
+![Rancher Dashboard](docs/RancherDashboard.png)
 
 ## License
 
