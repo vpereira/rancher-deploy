@@ -1,0 +1,29 @@
+# the kubeconfig form our k3s
+kubeconfig-remote.yaml
+# Terraform specific files
+*.tfstate
+*.auto.tfvars
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+terraform.tfvars
+terraform.tfvars.json
+*.tfplan
+*.backup
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Ansible specific files
+*.retry
+# Ignore SSH key files if any are used
+*.pem
+*.key
+# Vault secrets
+.vault-pass
+# Ansible inventory files with sensitive data
+inventory
