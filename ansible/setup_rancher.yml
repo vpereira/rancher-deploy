@@ -36,7 +36,7 @@
     - name: Copy kubeconfig from the K3s node to local machine
       fetch:
         src: /etc/rancher/k3s/k3s.yaml
-        dest: kubeconfig-remote.yaml
+        dest: kubeconfig-rancher-remote.yaml
         flat: yes
         validate_checksum: no
       become: yes
@@ -44,7 +44,7 @@
     - name: Update server address in kubeconfig for local access
       delegate_to: localhost
       ansible.builtin.replace:
-        path: kubeconfig-remote.yaml
+        path: kubeconfig-rancher-remote.yaml
         regexp: 'server: https://127.0.0.1:6443'
         replace: 'server: https://{{ hostvars[inventory_hostname].ansible_host }}:6443'
 

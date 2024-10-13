@@ -1,5 +1,5 @@
 # the kubeconfig form our k3s
-kubeconfig-remote.yaml
+kubeconfig-*remote.yaml
 # Terraform specific files
 *.tfstate
 *.auto.tfvars

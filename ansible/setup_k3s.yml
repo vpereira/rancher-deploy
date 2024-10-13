@@ -1,6 +1,6 @@
 ---
 - name: Install K3s on openSUSE MicroOS
-  hosts: rancher_node
+  hosts: k3s_node
   roles:
     - role: k3s_install
   # We are running everything as root
