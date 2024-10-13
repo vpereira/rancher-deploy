@@ -1,0 +1,9 @@
+---
+- name: Install K3s on openSUSE MicroOS
+  hosts: rancher_node
+  roles:
+    - role: k3s_install
+  # We are running everything as root
+  # become: yes
+  vars:
+    necessary_packages: k3s-install helm

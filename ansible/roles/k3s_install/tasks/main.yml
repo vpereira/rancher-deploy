@@ -1,0 +1,51 @@
+---
+# tasks/main.yml
+- name: Install k3s and helm using transactional-update
+  ansible.builtin.shell: |
+    transactional-update -n pkg install {{ necessary_packages }}
+  register: install_k3s_result
+  changed_when: "'No updates needed' not in install_k3s_result.stdout"
+
+- name: Reboot the server after installation
+  ansible.builtin.reboot:
+    msg: "Rebooting after k3s and helm installation"
+    pre_reboot_delay: 10
+
+- name: Wait for the server to come back online
+  ansible.builtin.wait_for_connection:
+    timeout: 300
+
+- name: Run k3s-install
+  ansible.builtin.shell: k3s-install
+  args:
+    creates: /etc/systemd/system/k3s.service
+
+- name: Start k3s service
+  ansible.builtin.systemd:
+    name: k3s
+    state: started
+    enabled: yes
+
+- name: Verify K3s installation
+  ansible.builtin.shell: kubectl get nodes
+  register: kubectl_result
+  changed_when: false
+
+- name: Display K3s nodes
+  ansible.builtin.debug:
+    var: kubectl_result.stdout
+
+- name: Copy kubeconfig from the K3s node to the local machine
+  fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: kubeconfig-remote.yaml
+    flat: yes
+    validate_checksum: no
+  become: yes
+
+- name: Update server address in kubeconfig for local access
+  delegate_to: localhost
+  ansible.builtin.replace:
+    path: kubeconfig-remote.yaml
+    regexp: 'server: https://127.0.0.1:6443'
+    replace: 'server: https://{{ hostvars[inventory_hostname].ansible_host }}:6443'

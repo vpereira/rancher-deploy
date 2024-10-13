@@ -1,46 +1,14 @@
 ---
 - name: Install K3s on openSUSE MicroOS
   hosts: rancher_node
+  roles:
+    - role: k3s_install
+  # We are running everything as root
   # become: yes
   vars:
     necessary_packages: k3s-install helm
 
   tasks:
-    - name: Install k3s using transactional-update
-      ansible.builtin.shell: |
-        transactional-update -n pkg install {{ necessary_packages }}
-      register: install_k3s_result
-      changed_when: "'No updates needed' not in install_k3s_result.stdout"
-
-    - name: Reboot the server after installation
-      ansible.builtin.reboot:
-        msg: "Rebooting after k3s package installation"
-        pre_reboot_delay: 10
-
-    - name: Wait for the server to come back online
-      ansible.builtin.wait_for_connection:
-        timeout: 300
-
-    - name: Run k3s-install
-      ansible.builtin.shell: k3s-install
-      args:
-        creates: /etc/systemd/system/k3s.service
-
-    - name: Start k3s service
-      ansible.builtin.systemd:
-        name: k3s
-        state: started
-        enabled: yes
-
-    - name: Verify K3s installation
-      ansible.builtin.shell: kubectl get nodes
-      register: kubectl_result
-      changed_when: false
-
-    - name: Display K3s nodes
-      ansible.builtin.debug:
-        var: kubectl_result.stdout
-
     - name: Add Jetstack Helm repository for cert-manager
       ansible.builtin.shell: |
         helm repo add jetstack https://charts.jetstack.io

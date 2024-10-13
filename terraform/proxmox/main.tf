@@ -31,7 +31,7 @@ resource "proxmox_vm_qemu" "microos_vm" {
     scsi {
       scsi0 {
         disk {
-          size = "32G"
+          size = "40G"
           storage = "local-lvm"
         }
       }
