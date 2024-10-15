@@ -47,7 +47,7 @@ resource "proxmox_vm_qemu" "microos_vm" {
   }
 
   # Cloud-init Configuration
-  ipconfig0 = "ip=192.168.0.11/24,gw=192.168.0.1"  # Adjust the gateway as needed
+  ipconfig0 = var.ipconfig0
   sshkeys = var.ssh_pub_keys
   nameserver = var.dns_server
 }

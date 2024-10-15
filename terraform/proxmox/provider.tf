@@ -37,3 +37,7 @@ variable "proxmox_target_node" {
 variable "image_name" {
   type = string
 }
+
+variable "ipconfig0" {
+  type = string
+}
