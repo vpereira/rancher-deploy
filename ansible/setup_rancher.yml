@@ -6,7 +6,7 @@
   # We are running everything as root
   # become: yes
   vars:
-    necessary_packages: k3s-install helm
+    necessary_packages: k3s-install helm nfs-utils
 
   tasks:
     - name: Add Jetstack Helm repository for cert-manager
