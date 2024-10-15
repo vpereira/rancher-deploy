@@ -7,8 +7,8 @@ provider "proxmox" {
 }
 
 resource "proxmox_vm_qemu" "microos_vm" {
-  name        = "k3s-clone"
-  target_node = "proxmox2" 
+  name        = var.image_name
+  target_node = var.proxmox_target_node
   clone       = "k3s"
   agent = 1
   scsihw = "virtio-scsi-single"
@@ -48,9 +48,7 @@ resource "proxmox_vm_qemu" "microos_vm" {
 
   # Cloud-init Configuration
   ipconfig0 = "ip=192.168.0.11/24,gw=192.168.0.1"  # Adjust the gateway as needed
-  sshkeys   = <<EOF
-  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDxwi9Lg3SNYHJexc65pDeG89ZvPwciGrWFXwyS0Tu/XVWn59z6unqffU5IkilgZpIq7xBdiX42sjdWAmOCpeKn2FfsRDUTXf547E9bd5oguTpwObyGJuXKrsxo3GAg5lAhgY1bTqgnuH6z8YtShlTWWYbGdamlxnhOrk0QOaBR2Par9chqFjcbv/F15SVOkJc5qAiJE/oSBzitqR/LbkN98TOLnLEKn4oN6xcalmOdn0oRcPskHjRiOImpxLKcB159bbRbSxafg6/8IOzPPmjM3ILwoFG8LQ4rMnKvI62o7o7IJfc8IS6WSlkVkUSRaFFXdWxZJuC77BSQXl2ctJT3 vpereira@linux-88ja
-  EOF
-  nameserver = "192.168.0.18"
+  sshkeys = var.ssh_pub_keys
+  nameserver = var.dns_server
 }
 

@@ -21,3 +21,19 @@ variable "proxmox_api_token_secret" {
     type = string
     sensitive = true
 }
+
+variable "ssh_pub_keys" {
+  type = string
+}
+
+variable "dns_server" {
+  type = string
+}
+
+variable "proxmox_target_node" {
+  type = string
+}
+
+variable "image_name" {
+  type = string
+}
